@@ -5,6 +5,7 @@ import { InputMask } from '@react-input/mask';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import {
 	Form,
@@ -16,9 +17,10 @@ import {
 } from '@/components/ui/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { DataTable } from '@/components/ui/data-table';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { columns } from './columns';
 import { TProcess } from '@/types/process';
+import { useQuery } from '@tanstack/react-query';
 
 const formSchema = z.object({
 	processNumber: z.string(),
@@ -35,6 +37,19 @@ const Inicio = () => {
 		},
 	});
 
+	const initFetch = useCallback(async () => {
+		try {
+			return await axios.get('http://localhost:8000/process');
+		} catch (err) {
+			console.error(err);
+		}
+	}, []);
+
+	const { data } = useQuery({
+		queryKey: ['getAllProcess'],
+		queryFn: initFetch,
+	});
+
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// const res = await fetch(`/processSearch?filter=${values.processNumber}`, {
 		// 	method: 'GET',
@@ -44,12 +59,14 @@ const Inicio = () => {
 		// console.log('Process', proccess);
 
 		console.log('Process Formatted', values);
+
 		const aux = {
 			...values,
 			status: 'teste',
 			description: 'kdfjsdhfksjdfhskdjfh',
 		};
 		setProcess(prev => [...prev, aux]);
+
 		form.reset();
 	}
 	return (

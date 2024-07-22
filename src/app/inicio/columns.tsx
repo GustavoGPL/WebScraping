@@ -25,13 +25,6 @@ export const columns: ColumnDef<TProcess>[] = [
 	{
 		accessorKey: 'processNumber',
 		header: 'Número',
-		// cell: ({ row }) => {
-		// 	return (
-		// 		<div className="w-fit underline hover:cursor-pointer">
-		// 			{row.getValue('processNumber')}
-		// 		</div>
-		// 	);
-		// },
 	},
 	{
 		accessorKey: 'status',
