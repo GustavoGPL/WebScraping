@@ -6,14 +6,15 @@ export async function GET(request: Request) {
 	let browser;
 	try {
 		const url = new URL(request.url);
-		const pageIndex = url.searchParams.get('page') || 1;
+		const filtro = url.searchParams.get('filter') || '';
+		console.log('Filtro', filtro);
 		browser = await puppeteer.launch();
 		const page = await browser.newPage();
 		// await page.goto(
 		// 	`https://esaj.tjce.jus.br/cpopg/search.do?paginaConsulta=${pageIndex}&conversationId=&cbPesquisa=NMADVOGADO&dadosConsulta.valorConsulta=Lucas+Espinola+Arruda&cdForo=-1`
 		// );
 		await page.goto(
-			`https://esaj.tjce.jus.br/cpopg/show.do?processo.codigo=01001RL1B0000&processo.foro=1&processo.numero=0276796-71.2021.8.06.0001`
+			`https://esaj.tjce.jus.br/cpopg/show.do?processo.foro=1&processo.numero=${filtro}`
 		);
 		const html = await page.content(); //get the entire html content
 		const $ = cheerio.load(html); //load the html content
@@ -25,6 +26,12 @@ export async function GET(request: Request) {
 			.get();
 
 		const actions = $('td.descricaoMovimentacao')
+			.map((index, element) => {
+				return $(element).text().replace(/\n|\t/g, '').trim();
+			})
+			.get();
+
+		const classe = $('span#classeProcesso')
 			.map((index, element) => {
 				return $(element).text().replace(/\n|\t/g, '').trim();
 			})
@@ -78,7 +85,8 @@ export async function GET(request: Request) {
 				// review: reviews[i],
 				// imageUrl: imageUrls[i],
 				data: date[i],
-				action: actions[0],
+				action: actions[i],
+				classeProcesso: classe[i],
 			};
 			data.push(item);
 		}

@@ -37,33 +37,33 @@ const Inicio = () => {
 		},
 	});
 
-	const initFetch = useCallback(async () => {
-		try {
-			return await axios.get('http://localhost:8000/process');
-		} catch (err) {
-			console.error(err);
-		}
-	}, []);
+	// const initFetch = useCallback(async () => {
+	// 	try {
+	// 		return await axios.get('http://localhost:8000/process');
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }, []);
 
-	const { data } = useQuery({
-		queryKey: ['getAllProcess'],
-		queryFn: initFetch,
-	});
+	// const { data } = useQuery({
+	// 	queryKey: ['getAllProcess'],
+	// 	queryFn: initFetch,
+	// });
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		// const res = await fetch(`/processSearch?filter=${values.processNumber}`, {
-		// 	method: 'GET',
-		// });
+		const res = await axios.get(
+			`/processSearch?filter=${values.processNumber}`
+		);
 
-		// const proccess = await res.json();
-		// console.log('Process', proccess);
+		const proccess = res.data;
+		console.log('Process', proccess[0]);
 
 		console.log('Process Formatted', values);
 
 		const aux = {
 			...values,
-			status: 'teste',
-			description: 'kdfjsdhfksjdfhskdjfh',
+			status: proccess[0]?.action,
+			description: proccess[0]?.classeProcesso,
 		};
 		setProcess(prev => [...prev, aux]);
 
@@ -71,7 +71,7 @@ const Inicio = () => {
 	}
 	return (
 		<section className="flex justify-center m-10">
-			<Card className="flex w-[60%]">
+			<Card className="flex w-[80%]">
 				<CardContent className="w-full">
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
