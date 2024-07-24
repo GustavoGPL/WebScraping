@@ -60,6 +60,7 @@ const Inicio = () => {
 	const { isPending } = useQuery({
 		queryKey: ['getAllProcess'],
 		queryFn: initFetch,
+		staleTime: Infinity,
 		refetchOnWindowFocus: false,
 	});
 
