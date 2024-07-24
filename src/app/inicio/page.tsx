@@ -20,7 +20,10 @@ import { DataTable } from '@/components/ui/data-table';
 import { useCallback, useState } from 'react';
 import { columns } from './columns';
 import { TProcess } from '@/types/process';
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
+import { SkeletonTable } from '@/components/skeleton-table';
 
 const formSchema = z.object({
 	processNumber: z.string(),
@@ -28,7 +31,6 @@ const formSchema = z.object({
 
 const Inicio = () => {
 	const [process, setProcess] = useState<TProcess[]>([]);
-	// const [isOpenModal, setIsOpenModal] = useState(false);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -37,18 +39,29 @@ const Inicio = () => {
 		},
 	});
 
-	// const initFetch = useCallback(async () => {
-	// 	try {
-	// 		return await axios.get('http://localhost:8000/process');
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }, []);
+	const initFetch = useCallback(async () => {
+		try {
+			const app = await axios.get('http://localhost:8000/process');
+			const processMapped = app.data.map((p: any) => p.processNumber);
+			const res = await axios.get(`/processSearch?filter=${processMapped}`);
+			const aux = [
+				{
+					processNumber: processMapped,
+					status: res.data[0].action,
+					description: res.data[0].classeProcesso,
+				},
+			];
+			setProcess(aux);
+		} catch (err) {
+			console.error(err);
+		}
+	}, []);
 
-	// const { data } = useQuery({
-	// 	queryKey: ['getAllProcess'],
-	// 	queryFn: initFetch,
-	// });
+	const { isPending } = useQuery({
+		queryKey: ['getAllProcess'],
+		queryFn: initFetch,
+		refetchOnWindowFocus: false,
+	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const res = await axios.get(
@@ -98,7 +111,11 @@ const Inicio = () => {
 								<Button type="submit">Enviar</Button>
 							</div>
 						</form>
-						<DataTable data={process} columns={columns} />
+						{isPending ? (
+							<SkeletonTable />
+						) : (
+							<DataTable data={process} columns={columns} />
+						)}
 					</Form>
 				</CardContent>
 			</Card>
