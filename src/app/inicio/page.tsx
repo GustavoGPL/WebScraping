@@ -23,6 +23,7 @@ import { TProcess } from '@/types/process';
 // import { useQuery } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { SkeletonTable } from '@/components/skeleton-table';
+import { queryClient } from '@/utils/react-query';
 
 const formSchema = z.object({
 	processNumber: z.string(),
@@ -78,7 +79,15 @@ const Inicio = () => {
 		refetchOnWindowFocus: false,
 	});
 
-	const {} = useMutation({});
+	const processMutation = useMutation({
+		mutationFn: (aux: TProcess) =>
+			axios.post('http://localhost:8000/process', {
+				processNumber: aux.processNumber,
+			}),
+		onSuccess: (data, variables) => {
+			console.log('Data', data);
+		},
+	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const res = await axios.get(
@@ -99,9 +108,7 @@ const Inicio = () => {
 				existingProcess => existingProcess.processNumber === aux.processNumber
 			)
 		) {
-			await axios.post('http://localhost:8000/process', {
-				processNumber: aux.processNumber,
-			});
+			processMutation.mutate(aux);
 			setProcess(prev => [...prev, aux]);
 		}
 
