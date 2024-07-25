@@ -26,9 +26,9 @@ export const columns: ColumnDef<TProcess>[] = [
 	{
 		accessorKey: 'processNumber',
 		header: 'Número',
-		cell: ({ row }) => {
-			return <td className="w-[500px]">{row.getValue('processNumber')}</td>;
-		},
+		// cell: ({ row }) => {
+		// 	return <td className="w-[500px]">{row.getValue('processNumber')}</td>;
+		// },
 	},
 	{
 		accessorKey: 'description',
@@ -37,9 +37,9 @@ export const columns: ColumnDef<TProcess>[] = [
 	{
 		accessorKey: 'status',
 		header: 'Status',
-		cell: ({ row }) => {
-			return <td className="w-[800px]">{row.getValue('status')}</td>;
-		},
+		// cell: ({ row }) => {
+		// 	return <td className="w-[800px]">{row.getValue('status')}</td>;
+		// },
 	},
 	{
 		header: 'Detalhamento',
@@ -55,7 +55,7 @@ export const columns: ColumnDef<TProcess>[] = [
 						<DialogContent className="sm:max-w-[50%]">
 							<DialogHeader>
 								<DialogTitle>
-									Detalhes do Processo -{' '}
+									Processo -{' '}
 									<Link
 										target="_blank"
 										href={`https://esaj.tjce.jus.br/cpopg/show.do?processo.foro=1&processo.numero=${pNumber}`}

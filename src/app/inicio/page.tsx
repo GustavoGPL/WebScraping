@@ -21,8 +21,7 @@ import { useCallback, useState } from 'react';
 import { columns } from './columns';
 import { TProcess } from '@/types/process';
 // import { useQuery } from '@tanstack/react-query';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { SkeletonTable } from '@/components/skeleton-table';
 
 const formSchema = z.object({
@@ -42,27 +41,44 @@ const Inicio = () => {
 	const initFetch = useCallback(async () => {
 		try {
 			const app = await axios.get('http://localhost:8000/process');
-			const processMapped = app.data.map((p: any) => p.processNumber);
-			const res = await axios.get(`/processSearch?filter=${processMapped}`);
-			const aux = [
-				{
-					processNumber: processMapped,
-					status: res.data[0].action,
-					description: res.data[0].classeProcesso,
-				},
-			];
-			setProcess(aux);
+			const processMaped = app.data.map((p: any) => p.processNumber);
+			const requests = processMaped.map((pn: any) =>
+				axios.get(`/processSearch?filter=${pn}`)
+			);
+			const responses = await Promise.all(requests);
+			const proccesses = responses.map((res, index) => {
+				const proccess = res.data;
+				return {
+					processNumber: processMaped[index],
+					status: proccess[0]?.action,
+					description: proccess[0]?.classeProcesso,
+				};
+			});
+
+			// Remove duplications
+			const uniqueProcesses = proccesses.filter(
+				newProcess =>
+					!process.some(
+						existingProcess =>
+							existingProcess.processNumber === newProcess.processNumber
+					)
+			);
+
+			setProcess(prev => [...prev, ...uniqueProcesses]);
+			return proccesses;
 		} catch (err) {
 			console.error(err);
 		}
-	}, []);
+	}, [process]);
 
 	const { isPending } = useQuery({
 		queryKey: ['getAllProcess'],
 		queryFn: initFetch,
-		staleTime: Infinity,
+		refetchInterval: 1800000,
 		refetchOnWindowFocus: false,
 	});
+
+	const {} = useMutation({});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const res = await axios.get(
@@ -70,16 +86,24 @@ const Inicio = () => {
 		);
 
 		const proccess = res.data;
-		console.log('Process', proccess[0]);
-
-		console.log('Process Formatted', values);
 
 		const aux = {
-			...values,
+			processNumber: values.processNumber,
 			status: proccess[0]?.action,
 			description: proccess[0]?.classeProcesso,
 		};
-		setProcess(prev => [...prev, aux]);
+
+		// Check if the process already exists
+		if (
+			!process.some(
+				existingProcess => existingProcess.processNumber === aux.processNumber
+			)
+		) {
+			await axios.post('http://localhost:8000/process', {
+				processNumber: aux.processNumber,
+			});
+			setProcess(prev => [...prev, aux]);
+		}
 
 		form.reset();
 	}
