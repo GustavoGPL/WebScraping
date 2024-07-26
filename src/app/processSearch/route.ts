@@ -84,7 +84,7 @@ export async function GET(request: Request) {
 				// received: receivedIn[i]
 				// review: reviews[i],
 				// imageUrl: imageUrls[i],
-				data: date[i],
+				dataAction: date[i],
 				action: actions[i],
 				classeProcesso: classe[i],
 			};

@@ -12,37 +12,54 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { ColumnDef } from '@tanstack/react-table';
+import { ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type TProcess = {
+	dataAction?: string;
 	processNumber: string;
-	status: string;
-	description: string;
+	status?: string;
+	description?: string;
 };
 
 export const columns: ColumnDef<TProcess>[] = [
 	{
 		accessorKey: 'processNumber',
-		header: 'Número',
+		header: 'NÚMERO',
 		// cell: ({ row }) => {
 		// 	return <td className="w-[500px]">{row.getValue('processNumber')}</td>;
 		// },
 	},
 	{
 		accessorKey: 'description',
-		header: 'Classe',
+		header: 'CLASSE',
+	},
+	{
+		accessorKey: 'dataAction',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					DATA
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		sortUndefined: 'last',
 	},
 	{
 		accessorKey: 'status',
-		header: 'Status',
+		header: 'STATUS',
 		// cell: ({ row }) => {
 		// 	return <td className="w-[800px]">{row.getValue('status')}</td>;
 		// },
 	},
 	{
-		header: 'Detalhamento',
+		header: 'DETALHAMENTO',
 		cell: ({ row }) => {
 			const pNumber = row.getValue('processNumber');
 			console.log('Pnumber', pNumber);
