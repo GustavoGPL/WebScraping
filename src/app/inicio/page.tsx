@@ -21,7 +21,7 @@ import { useCallback, useState } from 'react';
 import { columns } from './columns';
 import { TProcess } from '@/types/process';
 // import { useQuery } from '@tanstack/react-query';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { SkeletonTable } from '@/components/skeleton-table';
 import { queryClient } from '@/utils/react-query';
 
@@ -78,6 +78,7 @@ const Inicio = () => {
 		queryKey: ['getAllProcess'],
 		queryFn: initFetch,
 		refetchInterval: 1800000,
+		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 	});
 
@@ -158,7 +159,11 @@ const Inicio = () => {
 									)}
 								/>
 								<div className="flex justify-end !mb-4">
-									<Button type="submit" disabled={isSubmitting}>
+									<Button
+										className="bg-blue-500 hover:bg-blue-600"
+										type="submit"
+										disabled={isSubmitting}
+									>
 										Enviar
 									</Button>
 								</div>

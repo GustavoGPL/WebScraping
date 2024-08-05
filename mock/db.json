@@ -1,32 +1,25 @@
 {
-  "process": [
-    {
-      "dataAction": "15/07/2024",
-      "processNumber": "0200957-04.2022.8.06.0034",
-      "status": "Expedição de Ato OrdinatórioEm cumprimento ao despacho página 314, designei a audiência de instrução para o dia 02/09/2024 às 9hrs, no formato presencial. Seguindo os autos para elaboração dos expedientes necessários.",
-      "description": "Reintegração / Manutenção de Posse",
-      "id": 1
-    },
-    {
-      "dataAction": "12/07/2024",
-      "processNumber": "0276796-71.2021.8.06.0001",
-      "status": "Concluso para Despacho",
-      "description": "Inventário",
-      "id": 2
-    },
-    {
-      "dataAction": "26/06/2024",
-      "processNumber": "0050255-54.2021.8.06.0075",
-      "status": "Proferido despacho de mero expedienteVistos etc., Cumpra-se conforme requerido pelo Ministério Público à pág. 635, com prazo de 15 (quinze) dias para resposta. Ademais, diante do teor do Ofício Circular nº 20/2024-GABPRESI e Resolução nº 04/2023 do Órgão Especial do TJCE oficie-se a Comissão Regional de Soluções Fundiárias prestando as informações necessárias do corrente caso, para fins de análise de enquadramento do caso em testilha nos liames de atuação da citada comissão, com prazo de 15 (quinze) dias para resposta. Exp. Nec. Eusebio (CE), 25 de junho de 2024. Rejane Eire Fernandes Alves Juíza de Direito",
-      "description": "Reintegração / Manutenção de Posse",
-      "id": 3
-    },
-    {
-      "dataAction": "Sem informação",
-      "processNumber": "0000000-00.0000.0.00.0000",
-      "status": "Sem informação",
-      "description": "Sem informação",
-      "id": 4
-    }
-  ]
+	"process": [
+		{
+			"dataAction": "15/07/2024",
+			"processNumber": "0200957-04.2022.8.06.0034",
+			"status": "Expedição de Ato OrdinatórioEm cumprimento ao despacho página 314, designei a audiência de instrução para o dia 02/09/2024 às 9hrs, no formato presencial. Seguindo os autos para elaboração dos expedientes necessários.",
+			"description": "Reintegração / Manutenção de Posse",
+			"id": 1
+		},
+		{
+			"dataAction": "12/07/2024",
+			"processNumber": "0276796-71.2021.8.06.0001",
+			"status": "Concluso para Despacho",
+			"description": "Inventário",
+			"id": 2
+		},
+		{
+			"dataAction": "26/06/2024",
+			"processNumber": "0050255-54.2021.8.06.0075",
+			"status": "Proferido despacho de mero expedienteVistos etc., Cumpra-se conforme requerido pelo Ministério Público à pág. 635, com prazo de 15 (quinze) dias para resposta. Ademais, diante do teor do Ofício Circular nº 20/2024-GABPRESI e Resolução nº 04/2023 do Órgão Especial do TJCE oficie-se a Comissão Regional de Soluções Fundiárias prestando as informações necessárias do corrente caso, para fins de análise de enquadramento do caso em testilha nos liames de atuação da citada comissão, com prazo de 15 (quinze) dias para resposta. Exp. Nec. Eusebio (CE), 25 de junho de 2024. Rejane Eire Fernandes Alves Juíza de Direito",
+			"description": "Reintegração / Manutenção de Posse",
+			"id": 3
+		}
+	]
 }
